@@ -13,17 +13,17 @@ def prototype_phrase_state():
     # ----- DATA -----
 
     # Source sequences
-    state['source'] = ["/data/lisatmp3/bahdanau/shuffled/phrase-table.en.h5"]
+    state['source'] = ["/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/binarized_text.en.h5"]
     # Target sequences
-    state['target'] = ["/data/lisatmp3/bahdanau/shuffled/phrase-table.fr.h5"]
+    state['target'] = ["/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/binarized_text.fr.h5"]
     # index -> word dict for the source language
-    state['indx_word'] = "/data/lisatmp3/chokyun/mt/ivocab_source.pkl"
+    state['indx_word'] = "/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/ivocab.en.pkl"
     # index -> word dict for the target language
-    state['indx_word_target'] = "/data/lisatmp3/chokyun/mt/ivocab_target.pkl"
+    state['indx_word_target'] = "/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/ivocab.fr.pkl"
     # word -> index dict for the source language
-    state['word_indx'] = "/data/lisatmp3/chokyun/mt/vocab.en.pkl"
+    state['word_indx'] = "/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/vocab.en.pkl"
     # word -> index dict for the target language
-    state['word_indx_trgt'] = "/data/lisatmp3/bahdanau/vocab.fr.pkl"
+    state['word_indx_trgt'] = "/home/thuan/sandbox/nlp/largevocab/LV_groundhog/experiments/nmt/vocab.fr.pkl"
 
     # ----- VOCABULARIES -----
 
