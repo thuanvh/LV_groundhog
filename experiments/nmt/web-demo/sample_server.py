@@ -70,13 +70,13 @@ class Sampler:
 
     def sample(self, sentence, ignore_unk=False):
         if self.tokenizer_cmd:
-            tokenizer=Popen(self.tokenizer_cmd, stdin=PIPE, stdout=PIPE)
+            tokenizer=Popen(self.tokenizer_cmd, stdin=PIPE, stdout=PIPE, shell=True)
             sentence, _ = tokenizer.communicate(sentence)
         seq, parsed_in = parse_input(self.state, self.indx_word, sentence, idx2word=self.idict_src)
         # Sample a translation and detokenize it
         trans, cost, _ = sample(self.lm_model, seq, 10, beam_search=self.beam_search, normalize=True, ignore_unk=ignore_unk)
         if self.detokenizer_cmd:
-            detokenizer=Popen(self.detokenizer_cmd, stdin=PIPE, stdout=PIPE)
+            detokenizer=Popen(self.detokenizer_cmd, stdin=PIPE, stdout=PIPE, shell=True)
             detokenized_sentence, _ = detokenizer.communicate(trans[0])
         else:
             detokenized_sentence = trans[0]

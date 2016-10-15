@@ -5,7 +5,7 @@ $fp = fopen('/tmp/flock', 'w');
 if (flock($fp, LOCK_EX)) 
 {
 	$source=$_GET["source"];
-	$url = 'http://eos12:8888/?ignore_unk='.$_GET['ignore_unk'].'&source='.urlencode($source);
+	$url = 'http://localhost:8888/?ignore_unk='.$_GET['ignore_unk'].'&source='.urlencode($source);
 	$out = file_get_contents($url);
 
 	echo urldecode($out);

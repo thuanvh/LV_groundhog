@@ -217,7 +217,11 @@ class LM_Model(Model):
         """
         Loading the dictionary that goes from indices to actual words
         """
-        if opts['rolling_vocab']:
+        is_rolling_vocab = False
+        if 'rolling_vocab' in opts:
+            is_rolling_vocab = opts['rolling_vocab']
+        #if opts['rolling_vocab']:
+        if is_rolling_vocab:
             if self.indx_word and '.pkl' in self.indx_word[-4:]:
                 data_dict = pkl.load(open(self.indx_word, "r"))
                 self.large2word_trgt = data_dict
