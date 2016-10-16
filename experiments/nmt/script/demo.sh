@@ -11,7 +11,7 @@ export THEANO_FLAGS='device=gpu,floatX=float32'
 python train.py --proto prototype_lv_state --state en-fr.state.py
 tmux
 python web-demo/sample_server.py --port=8888 --beam-search --state=web-demo/search_lv_state.pkl web-demo/search_lv_model0.npz
-export PATH=/usr/local/cuda-8.0/bin:/usr/local/cuda-8.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+export PATH=/usr/local/cuda-8.0/bin:$PATH
 python utils/convert_state_local.py old/3/search_lv_state.pkl old/3/search_lv_state.final.pkl
 python utils/build_final_model.py old/3/search_lv_model-1.npz old/3/search_lv_large-1.npz old/3/search_lv_model-1.final.npz
 PYTHONPATH=../../..:.:/usr/lib/python2.7 python sample_server.py --port=8888 --beam-search --state=../old/3/search_lv_state.final.pkl ../old/3/search_lv_model-1.final.npz
