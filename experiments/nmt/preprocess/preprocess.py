@@ -229,7 +229,7 @@ def binarize():
         input_file.seek(0)
     # endfor input_file in args.input
 
-    if (len(binarized_corpus) >= file_size_max):
+    if (len(binarized_corpus) >= 0):
         logger.info("Saving LAST " + len(binarized_corpus) + " sentences to file " + args.binarized_text + '-' + file_index + '.pkl')
         safe_pickle(binarized_corpus, args.binarized_text + '-' + file_index + '.pkl')
         binarized_corpus = []
