@@ -182,8 +182,8 @@ def binarize():
             binarized_sentence = [vocab.get(word, 1) for word in words]
             binarized_corpus.append(binarized_sentence)
             if(len(binarized_corpus) >= file_size_max):
-                logger.info("Saving " + len(binarized_corpus) + " sentences to file " + args.binarized_text + '-' + file_index + '.pkl')
-                safe_pickle(binarized_corpus, args.binarized_text + '-' + file_index + '.pkl')
+                logger.info("Saving " + str(len(binarized_corpus)) + " sentences to file " + args.binarized_text + '-' + str(file_index) + '.pkl')
+                safe_pickle(binarized_corpus, args.binarized_text + '-' + str(file_index) + '.pkl')
                 binarized_corpus = []
                 file_index += 1
             if args.ngram:
@@ -230,8 +230,8 @@ def binarize():
     # endfor input_file in args.input
 
     if (len(binarized_corpus) >= 0):
-        logger.info("Saving LAST " + len(binarized_corpus) + " sentences to file " + args.binarized_text + '-' + file_index + '.pkl')
-        safe_pickle(binarized_corpus, args.binarized_text + '-' + file_index + '.pkl')
+        logger.info("Saving LAST " + str(len(binarized_corpus)) + " sentences to file " + args.binarized_text + '-' + str(file_index) + '.pkl')
+        safe_pickle(binarized_corpus, args.binarized_text + '-' + str(file_index) + '.pkl')
         binarized_corpus = []
         file_index += 1
 
