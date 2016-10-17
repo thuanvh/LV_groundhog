@@ -167,18 +167,25 @@ def binarize():
         ngrams = numpy.empty((sum(combined_counter.values()) +
                               sum(sentence_counts), args.ngram),
                              dtype='uint16')
-    binarized_corpora = []
+    # binarized_corpora = []
     total_ngram_count = 0
+    file_size_max = 500000
+    file_index = 0
+    binarized_corpus = []
     for input_file, base_filename in \
             zip(args.input, base_filenames):
         input_filename = os.path.basename(input_file.name)
         logger.info("Binarizing %s." % (input_filename))
-        binarized_corpus = []
         ngram_count = 0
         for sentence_count, sentence in enumerate(input_file):
             words = sentence.strip().split(' ')
             binarized_sentence = [vocab.get(word, 1) for word in words]
             binarized_corpus.append(binarized_sentence)
+            if(len(binarized_corpus) >= file_size_max):
+                logger.info("Saving " + len(binarized_corpus) + " sentences to file " + args.binarized_text + '-' + file_index + '.pkl')
+                safe_pickle(binarized_corpus, args.binarized_text + '-' + file_index + '.pkl')
+                binarized_corpus = []
+                file_index += 1
             if args.ngram:
                 padded_sentence = numpy.asarray(
                     [0] * (args.ngram - 1) + binarized_sentence + [0]
@@ -217,12 +224,19 @@ def binarize():
             elif args.ngram:
                 logger.info("Saving n-grams to %s." % (base_filename + '.hdf'))
                 safe_hdf(ngrams, base_filename)
-        binarized_corpora += binarized_corpus
+        #binarized_corpora += binarized_corpus
         total_ngram_count += ngram_count
         input_file.seek(0)
     # endfor input_file in args.input
-    if args.pickle:
-        safe_pickle(binarized_corpora, args.binarized_text)
+
+    if (len(binarized_corpus) >= file_size_max):
+        logger.info("Saving LAST " + len(binarized_corpus) + " sentences to file " + args.binarized_text + '-' + file_index + '.pkl')
+        safe_pickle(binarized_corpus, args.binarized_text + '-' + file_index + '.pkl')
+        binarized_corpus = []
+        file_index += 1
+
+    #if args.pickle:
+    #    safe_pickle(binarized_corpora, args.binarized_text)
     if args.ngram and args.split:
         if args.split >= 1:
             rows = int(args.split)
