@@ -211,12 +211,16 @@ class PytablesBitextFetcher(threading.Thread):
                 if offset == data_len:
                     if self.file_index < len(diter.source_file) :
                         self.file_index += 1
-                        (target_data, target_index, source_data, source_index, data_len) = self.reset_data_file(self.file_index)
+                        (target_data, target_index, source_data, source_index, data_len) = \
+                            self.reset_data_file(self.file_index)
                         offset = 0
                         last_batch = False
                         pause()
                     else:
                         if diter.use_infinite_loop:
+                            self.file_index = 0
+                            (target_data, target_index, source_data, source_index, data_len) = \
+                                self.reset_data_file(self.file_index)
                             offset = 0
                             last_batch = True
                         else:
