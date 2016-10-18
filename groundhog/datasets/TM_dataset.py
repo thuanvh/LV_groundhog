@@ -165,23 +165,31 @@ class PytablesBitextFetcher(threading.Thread):
         self.parent = parent
         self.start_offset = start_offset
 
-    def run(self):
-        diter = self.parent
 
+    def reset_data_file(self, file_index):
+        logger.info("Reading the file #{}-".file_index)
+        diter = self.parent
         driver = None
         if diter.can_fit:
             driver = "H5FD_CORE"
 
-        target_table = tables.open_file(diter.target_file, 'r', driver=driver)
+        logger.info("Open {}" + (diter.target_file[file_index]))
+        target_table = tables.open_file(diter.target_file[file_index], 'r', driver=driver)
         target_data, target_index = (target_table.get_node(diter.table_name),
-            target_table.get_node(diter.index_name))
+                                     target_table.get_node(diter.index_name))
 
-        source_table = tables.open_file(diter.source_file, 'r', driver=driver)
+        logger.info("Open {}" + (diter.source_file[file_index]))
+        source_table = tables.open_file(diter.source_file[file_index], 'r', driver=driver)
         source_data, source_index = (source_table.get_node(diter.table_name),
-            source_table.get_node(diter.index_name))
-
+                                     source_table.get_node(diter.index_name))
         assert source_index.shape[0] == target_index.shape[0]
         data_len = source_index.shape[0]
+        return (target_data, target_index, source_data, source_index, data_len)
+
+    def run(self):
+        diter = self.parent
+        self.file_index = 0
+        (target_data, target_index, source_data, source_index, data_len) = self.reset_data_file(self.file_index)
 
         offset = self.start_offset
         if offset == -1:
@@ -197,12 +205,18 @@ class PytablesBitextFetcher(threading.Thread):
             target_sents = []
             while len(source_sents) < diter.batch_size:
                 if offset == data_len:
-                    if diter.use_infinite_loop:
+                    if self.file_index < len(diter.source_file) :
+                        self.file_index += 1
+                        (target_data, target_index, source_data, source_index, data_len) = self.reset_data_file(self.file_index)
                         offset = 0
-                        last_batch = True
+                        last_batch = False
                     else:
-                        last_batch = True
-                    break
+                        if diter.use_infinite_loop:
+                            offset = 0
+                            last_batch = True
+                        else:
+                            last_batch = True
+                        break
 
                 slen, spos = source_index[offset]['length'], source_index[offset]['pos']
                 tlen, tpos = target_index[offset]['length'], target_index[offset]['pos']
