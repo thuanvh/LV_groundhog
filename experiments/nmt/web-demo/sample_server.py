@@ -17,9 +17,11 @@ from experiments.nmt import\
     parse_input
 from experiments.nmt.sample import sample, BeamSearch
 
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 import BaseHTTPServer
 from subprocess import Popen, PIPE
 import urllib
+from SocketServer import ThreadingMixIn
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +117,9 @@ def parse_args():
             help="Changes to state")
     return parser.parse_args()
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""
+
 def main():
     args = parse_args()
 
@@ -126,7 +131,8 @@ def main():
     logging.basicConfig(level=getattr(logging, state['level']), format="%(asctime)s: %(name)s: %(levelname)s: %(message)s")
 
     server_address = ('', args.port)
-    httpd = BaseHTTPServer.HTTPServer(server_address, MTReqHandler)
+    httpd = ThreadedHTTPServer(server_address, MTReqHandler)
+    #httpd = BaseHTTPServer.HTTPServer(server_address, MTReqHandler)
 
     rng = numpy.random.RandomState(state['seed'])
     enc_dec = RNNEncoderDecoder(state, rng, skip_init=True)
