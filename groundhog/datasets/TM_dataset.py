@@ -160,7 +160,8 @@ class TMIterator(object):
             return self.output_format(source_data, target_data)
 
 def pause():
-    abc = raw_input("Press a key to continue")
+    #abc = raw_input("Press a key to continue")
+    print "######################Pause++++ switch file"
 
 class PytablesBitextFetcher(threading.Thread):
     def __init__(self, parent, start_offset):
