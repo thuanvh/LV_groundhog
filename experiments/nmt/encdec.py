@@ -195,8 +195,8 @@ def get_batch_iterator(state, rng):
 
     train_data = Iterator(
         batch_size=int(state['bs']),
-        target_file=state['target'][0],
-        source_file=state['source'][0],
+        target_file=state['target'],
+        source_file=state['source'],
         can_fit=False,
         queue_size=1000,
         shuffle=state['shuffle'],
