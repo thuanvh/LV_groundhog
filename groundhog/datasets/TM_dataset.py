@@ -159,6 +159,9 @@ class TMIterator(object):
         else:
             return self.output_format(source_data, target_data)
 
+def pause():
+    os.system("pause")
+
 class PytablesBitextFetcher(threading.Thread):
     def __init__(self, parent, start_offset):
         threading.Thread.__init__(self)
@@ -167,6 +170,7 @@ class PytablesBitextFetcher(threading.Thread):
 
 
     def reset_data_file(self, file_index):
+        pause()
         logger.info("Reading the file #{}-".file_index)
         diter = self.parent
         driver = None
@@ -210,6 +214,7 @@ class PytablesBitextFetcher(threading.Thread):
                         (target_data, target_index, source_data, source_index, data_len) = self.reset_data_file(self.file_index)
                         offset = 0
                         last_batch = False
+                        pause()
                     else:
                         if diter.use_infinite_loop:
                             offset = 0
