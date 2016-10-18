@@ -171,18 +171,18 @@ class PytablesBitextFetcher(threading.Thread):
 
     def reset_data_file(self, file_index):
         pause()
-        logger.info("Reading the file #{}-".file_index)
+        logger.info("Reading the file # " + str(file_index))
         diter = self.parent
         driver = None
         if diter.can_fit:
             driver = "H5FD_CORE"
 
-        logger.info("Open {}" + (diter.target_file[file_index]))
+        logger.info("Open " + (diter.target_file[file_index]))
         target_table = tables.open_file(diter.target_file[file_index], 'r', driver=driver)
         target_data, target_index = (target_table.get_node(diter.table_name),
                                      target_table.get_node(diter.index_name))
 
-        logger.info("Open {}" + (diter.source_file[file_index]))
+        logger.info("Open " + (diter.source_file[file_index]))
         source_table = tables.open_file(diter.source_file[file_index], 'r', driver=driver)
         source_data, source_index = (source_table.get_node(diter.table_name),
                                      source_table.get_node(diter.index_name))
