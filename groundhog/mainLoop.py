@@ -240,14 +240,14 @@ class MainLoop(object):
             if self.state['rolling_vocab'] and not self.state['fixed_embeddings']:
                 self.save_large_params(self.state['prefix']+'large.npz')
         else:
-            numpy.savez(self.state['prefix']+'timing-' + str(self.save_iter) + '.npz',
+            numpy.savez(self.state['prefix']+'timing' + str(self.save_iter) + '.npz',
                         **self.timings)
             self.model.save(self.state['prefix'] +
-                            'model-%d.npz' % self.save_iter)
+                            'model%d.npz' % self.save_iter)
             if self.state['algo'] == 'SGD_adadelta' and self.state['save_algo']:
-                self.algo.save(self.state['prefix']+'algo-%d.npz' % self.save_iter)
+                self.algo.save(self.state['prefix']+'algo%d.npz' % self.save_iter)
             if self.state['rolling_vocab'] and not self.state['fixed_embeddings']:
-                self.save_large_params(self.state['prefix']+'large-%d.npz' % self.save_iter)
+                self.save_large_params(self.state['prefix']+'large%d.npz' % self.save_iter)
         cPickle.dump(self.state, open(self.state['prefix']+'state.pkl', 'w'))
         self.save_iter += 1
         self.state['save_iter'] = self.save_iter # Increment after saving only
@@ -260,24 +260,24 @@ class MainLoop(object):
         self.save_iter = self.state['save_iter']
         if model_path is None:
             if not self.state['overwrite']:
-                model_path = self.state['prefix'] + 'model-' + str(self.save_iter) + '.npz'
+                model_path = self.state['prefix'] + 'model' + str(self.save_iter) + '.npz'
             else:
                 model_path = self.state['prefix'] + 'model.npz'
         if timings_path is None:
             if not self.state['overwrite']:
-                timings_path = self.state['prefix'] + 'timing-' + str(self.save_iter) + '.npz'
+                timings_path = self.state['prefix'] + 'timing' + str(self.save_iter) + '.npz'
             else:
                 timings_path = self.state['prefix'] + 'timing.npz'
         if self.state['save_algo']:
             if algo_path is None:
                 if not self.state['overwrite']:
-                    algo_path = self.state['prefix'] + 'algo-' + str(self.save_iter) + '.npz'
+                    algo_path = self.state['prefix'] + 'algo' + str(self.save_iter) + '.npz'
                 else:
                     algo_path = self.state['prefix'] + 'algo.npz'
         if self.state['rolling_vocab']:
             if large_path is None:
                 if not self.state['overwrite']:
-                    large_path = self.state['prefix'] + 'large-' + str(self.save_iter) + '.npz'
+                    large_path = self.state['prefix'] + 'large' + str(self.save_iter) + '.npz'
                 else:
                     large_path = self.state['prefix'] + 'large.npz'
         try:
